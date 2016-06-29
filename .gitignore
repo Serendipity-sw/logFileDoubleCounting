@@ -1,0 +1,5 @@
+logFileDoubleCounting
+*.exe
+*.pid
+jstmp/*
+/.idea
