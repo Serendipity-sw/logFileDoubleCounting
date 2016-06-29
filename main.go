@@ -12,29 +12,74 @@ var (
 	fileArray []string
 	phoneCount map[string]int=make(map[string]int)
 	urlMatch map[string]int=make(map[string]int)
+	urlPhone map[string]name=map[string]name{}
 )
+
+type name  struct{
+	list map[string]int
+}
 
 func main() {
 
 	var ok bool
 
-	readFile("./jizhihui.log.2016-06-28-00")
+	readFile("./files/jizhihui.log.2016-06-28-00")
+	readFile("./files/jizhihui.log.2016-06-28-01")
+	readFile("./files/jizhihui.log.2016-06-28-02")
+	readFile("./files/jizhihui.log.2016-06-28-03")
+	readFile("./files/jizhihui.log.2016-06-28-04")
+	readFile("./files/jizhihui.log.2016-06-28-05")
+	readFile("./files/jizhihui.log.2016-06-28-06")
+	readFile("./files/jizhihui.log.2016-06-28-07")
+	readFile("./files/jizhihui.log.2016-06-28-08")
+	readFile("./files/jizhihui.log.2016-06-28-09")
+	readFile("./files/jizhihui.log.2016-06-28-10")
+	readFile("./files/jizhihui.log.2016-06-28-11")
+	readFile("./files/jizhihui.log.2016-06-28-12")
+	readFile("./files/jizhihui.log.2016-06-28-13")
+	readFile("./files/jizhihui.log.2016-06-28-14")
+	readFile("./files/jizhihui.log.2016-06-28-15")
+	readFile("./files/jizhihui.log.2016-06-28-16")
+	readFile("./files/jizhihui.log.2016-06-28-17")
+	readFile("./files/jizhihui.log.2016-06-28-18")
+	readFile("./files/jizhihui.log.2016-06-28-19")
+	readFile("./files/jizhihui.log.2016-06-28-20")
+	readFile("./files/jizhihui.log.2016-06-28-21")
+	readFile("./files/jizhihui.log.2016-06-28-22")
+	readFile("./files/jizhihui.log.2016-06-28-23")
 
 	var phone []string
-
+	//urlPhone map[string]name=map[string]name{}
 	for _, value:=range fileArray  {
 		phone=strings.Split(value,"	")
 		phoneCount[phone[0]]=0
 		_, ok = urlMatch[phone[2]]
 		if !ok {
 			urlMatch[phone[2]]=1
-			continue
+		}else{
+			urlMatch[phone[2]]++
 		}
-		urlMatch[phone[2]]++
+		var list map[string]int =make(map[string]int)
+		list[phone[0]]=0
+		_,ok=urlPhone[phone[2]]
+		if !ok {
+			urlPhone[phone[2]]=name{list:list}
+		}else{
+			urlPhone[phone[2]].list[phone[0]]=0
+		}
 	}
+	
+	fmt.Println(len(fileArray))
+	
 	fmt.Println(len(phoneCount))
 
-	fmt.Printf("%v",urlMatch)
+	fmt.Printf("%v \n",urlMatch)
+
+	fmt.Println(len(urlMatch))
+
+	for index,value:=range urlPhone  {
+		fmt.Printf("%s:%d ",index,len(value.list))
+	}
 }
 
 /**
