@@ -77,9 +77,20 @@ func main() {
 
 	fmt.Println(len(urlMatch))
 
+	phoneStr:=""
+	phoneStr+=fmt.Sprintf("%s,%d,%d \r\n","0",len(fileArray),len(phoneCount))
 	for index,value:=range urlPhone  {
 		fmt.Printf("%s:%d ",index,len(value.list))
+		phoneStr+=fmt.Sprintf("%s,%d,%d \r\n",index,urlMatch[index],len(value.list))
 	}
+
+	write,err:=os.OpenFile("./process.txt",os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0777)
+	if err != nil {
+		fmt.Printf("文件打开出错! err: %s \n",err.Error())
+		return
+	}
+	write.WriteString(fmt.Sprintf("%d \n %d \n %v \n %d \n %s \n",len(fileArray),len(phoneCount),urlMatch,len(urlMatch),phoneStr))
+	write.Close()
 }
 
 /**
