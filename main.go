@@ -16,8 +16,8 @@ var (
 
 func main() {
 
-	//sdfsdf:=strings.Split("128869346390430464      1467090830      275","      ")
-	//fmt.Println(sdfsdf[1])
+	var ok bool
+
 	readFile("./jizhihui.log.2016-06-28-00")
 
 	var phone []string
@@ -25,7 +25,7 @@ func main() {
 	for _, value:=range fileArray  {
 		phone=strings.Split(value,"	")
 		phoneCount[phone[0]]=0
-		_, ok := urlMatch[phone[2]]
+		_, ok = urlMatch[phone[2]]
 		if !ok {
 			urlMatch[phone[2]]=1
 			continue
