@@ -6,6 +6,7 @@ import (
 	"bufio"
 	"io"
 	"strings"
+	"io/ioutil"
 )
 
 var (
@@ -13,6 +14,8 @@ var (
 	phoneCount map[string]int=make(map[string]int)
 	urlMatch map[string]int=make(map[string]int)
 	urlPhone map[string]name=map[string]name{}
+	urlPathArray []string
+	urlNameArray map[string]string=make(map[string]string)
 )
 
 type name  struct{
@@ -21,32 +24,31 @@ type name  struct{
 
 func main() {
 
+	readFilde("./123123123.txt")
+var asdfasdfsa []string
+	for _,value:=range urlPathArray  {
+		asdfasdfsa=strings.Split(value,"	")
+		urlNameArray[asdfasdfsa[0]]=asdfasdfsa[1]
+	}
+
+
+	files, _ := ioutil.ReadDir("./files")
+	for _,file := range files {
+		if file.IsDir() {
+			continue
+		} else {
+			fmt.Println(file.Name())
+			readFile("./files/"+file.Name())
+		}
+	}
+
+
+
+
+
 	var ok bool
 
-	readFile("./files/jizhihui.log.2016-06-28-00")
-	readFile("./files/jizhihui.log.2016-06-28-01")
-	readFile("./files/jizhihui.log.2016-06-28-02")
-	readFile("./files/jizhihui.log.2016-06-28-03")
-	readFile("./files/jizhihui.log.2016-06-28-04")
-	readFile("./files/jizhihui.log.2016-06-28-05")
-	readFile("./files/jizhihui.log.2016-06-28-06")
-	readFile("./files/jizhihui.log.2016-06-28-07")
-	readFile("./files/jizhihui.log.2016-06-28-08")
-	readFile("./files/jizhihui.log.2016-06-28-09")
-	readFile("./files/jizhihui.log.2016-06-28-10")
-	readFile("./files/jizhihui.log.2016-06-28-11")
-	readFile("./files/jizhihui.log.2016-06-28-12")
-	readFile("./files/jizhihui.log.2016-06-28-13")
-	readFile("./files/jizhihui.log.2016-06-28-14")
-	readFile("./files/jizhihui.log.2016-06-28-15")
-	readFile("./files/jizhihui.log.2016-06-28-16")
-	readFile("./files/jizhihui.log.2016-06-28-17")
-	readFile("./files/jizhihui.log.2016-06-28-18")
-	readFile("./files/jizhihui.log.2016-06-28-19")
-	readFile("./files/jizhihui.log.2016-06-28-20")
-	readFile("./files/jizhihui.log.2016-06-28-21")
-	readFile("./files/jizhihui.log.2016-06-28-22")
-	readFile("./files/jizhihui.log.2016-06-28-23")
+
 
 	var phone []string
 	//urlPhone map[string]name=map[string]name{}
@@ -81,7 +83,7 @@ func main() {
 	phoneStr+=fmt.Sprintf("%s,%d,%d \r\n","0",len(fileArray),len(phoneCount))
 	for index,value:=range urlPhone  {
 		fmt.Printf("%s:%d ",index,len(value.list))
-		phoneStr+=fmt.Sprintf("%s,%d,%d \r\n",index,urlMatch[index],len(value.list))
+		phoneStr+=fmt.Sprintf("%s,%d,%d,%s \r\n",index,urlMatch[index],len(value.list),urlNameArray[index])
 	}
 
 	write,err:=os.OpenFile("./process.txt",os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0777)
@@ -130,3 +132,36 @@ func readFile(filePath string) {
 		}
 	}
 }
+
+func readFilde(filePath string) {
+	var(
+		readAll =false
+		readByte []byte
+		line []byte
+	)
+	read,err:=os.Open(filePath)
+	if err != nil {
+		fmt.Printf("文件打开失败! err: %s \n",err.Error())
+		return
+	}
+	defer read.Close()
+	buf:=bufio.NewReader(read)
+	for err!=io.EOF {
+		if err != nil {
+			fmt.Printf("文件读取错误! err: %s \n",err.Error())
+		}
+		if readAll {
+			readByte,readAll,err=buf.ReadLine()
+			line=append(line,readByte...)
+		}else{
+			readByte,readAll,err=buf.ReadLine()
+			line=append(line,readByte...)
+			if len(strings.TrimSpace(string(line)))==0 {
+				continue
+			}
+			urlPathArray=append(urlPathArray,string(line))
+			line=line[:0]
+		}
+	}
+}
+
